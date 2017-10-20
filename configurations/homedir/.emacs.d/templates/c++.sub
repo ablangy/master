@@ -1,0 +1,6 @@
+"@FILE-NAME@"	tpl-file-name
+"@USER-NAME@"	tpl-user-name
+"@DATE-STAMP@"	tpl-date-stamp
+"@EXTERN@"	(concat "EXTERN_" (upcase (substring tpl-file-name 0 (string-match "\\.[^.]+$" tpl-file-name))))
+"@HFILE@"	(concat (substring tpl-file-name 0 (string-match "\\.[^.]+$" tpl-file-name)) ".h")
+"@COPYRIGHT@"   (concat "@ CS COMMUNICATION & SYSTEMES 2007\n * communication, reproduction, utilisation interdites\n * copyright and all other rights reserved")

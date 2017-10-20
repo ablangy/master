@@ -1,0 +1,6 @@
+"@FILE-NAME@"	   tpl-file-name
+"@USER-NAME@"	   tpl-user-name
+"@DATE-STAMP@"	   tpl-date-stamp
+"@INFO-FILE-NAME@" (progn (string-match "\\.[^.]*$" tpl-file-name)
+                          (concat (substring tpl-file-name
+                                             0 (match-beginning 0)) ".info"))

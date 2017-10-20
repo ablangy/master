@@ -1,0 +1,8 @@
+"@FILE-NAME@"	tpl-file-name
+"@USER-NAME@"	tpl-user-name
+"@DATE-STAMP@"	tpl-date-stamp
+"@IFDEF@"	(concat "__" (upcase (substring tpl-file-name 0 (string-match "\\.[^.]+$" tpl-file-name))) "_" (upcase (substring tpl-file-name (string-match "[^.]+$" tpl-file-name))) "__")
+"@EXTERN@"	(concat "EXTERN_" (upcase (substring tpl-file-name 0 (string-match "\\.[^.]+$" tpl-file-name))))
+"@COPYRIGHT@"   (concat "@ CS COMMUNICATION & SYSTEMES 2007\n//  communication, 
+reproduction, utilisation interdites\n//  copyright and all other rights reserve
+d")

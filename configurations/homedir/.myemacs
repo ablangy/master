@@ -1,0 +1,199 @@
+;; Ma configuration Emacs personnalisee
+
+;; Test de presence d'un systeme de fenetrage
+(if window-system
+    ;;
+    ;; X est present
+    ;;
+    (progn
+      (require 'paren)
+
+      ;; Variables globales
+      (setq scroll-step 1)		;; Scrolling ligne par ligne
+      (setq mouse-scroll-delay 0.05)	;; Delai pour les blocs souris
+      )
+  ;;
+  ;; Nous sommes en mode texte
+  ;;
+
+  ;; Variables globales
+  (setq scroll-step 0)			;; Scrolling demi page par demi page
+  )
+
+(setq obj-login (user-login-name))                 ;; Pour une installation a domicile
+
+;; Scroll par ligne avec la molette de la souris
+(setq mouse-wheel-scroll-amount '(1 ((shift) . 5) ((control))))
+
+(let ((obj-emacs-dir ".emacs.d"))  ;; Repertoire qui contient tous les .el
+
+  ;; Chemins de recherche des .el[c]
+  (setq obj-path (concat "~" obj-login "/" obj-emacs-dir "/")
+	normal-path (concat "~/" obj-emacs-dir "/"))
+;;	load-path (append (directory-files obj-path) load-path))
+  )
+
+(add-to-list 'load-path "~/.emacs.d/")
+
+(autoload 'update-file-header "header2" "Mise a jour automatique du headers." t)
+(autoload 'make-header "header2"	"Mise en place d'un header." t)
+(autoload 'auto-template "auto-template" "Templates..." t)
+
+;; Commentaires
+(autoload 'indent-buffer "comment"	"Indente tout le buffer." t)
+(autoload 'draw-comment-line "comment"	"Affiche une ligne de commentaire." t)
+(autoload 'comment-line "comment"	"Commente la ligne courante." t)
+(autoload 'comment-paragraph "comment"	"Commente le paragraphe courant." t)
+(autoload 'remove-comment "comment"	"Enleve le commentaire." t)
+
+(global-set-key "\C-cl"		'comment-line)
+(global-set-key "\C-cp"		'comment-paragraph)
+(global-set-key "\C-cu"		'remove-comment)
+
+(defun personal-indentation ()
+  "Define default indentation's options."
+  (interactive)
+  (local-set-key [TAB]	'indent-according-to-mode)
+  (local-set-key [down]	'next-line)
+  (local-set-key [up]	'previous-line)
+  (local-set-key [return] 'reindent-then-newline-and-indent)
+  )
+
+;; Shifted keys
+(global-set-key [S-right]	'end-of-line)
+(global-set-key [S-left]	'beginning-of-line)
+(global-set-key [S-up]		'backward-page)
+(global-set-key [S-down]	'forward-page)
+(global-set-key [S-tab]		'tab-to-tab-stop)
+
+;; Ctrl keys
+(global-set-key [C-right]	'forward-word)
+(global-set-key [C-left]	'backward-word)
+(global-set-key [C-up]		'backward-paragraph)
+(global-set-key [C-down]	'forward-paragraph)
+
+;; Shifted-Ctrl keys
+(global-set-key [S-C-right]	'end-of-defun)
+(global-set-key [S-C-left]	'beginning-of-defun)
+(global-set-key [S-C-up]	'beginning-of-buffer)
+(global-set-key [S-C-down]	'end-of-buffer)
+
+;; ESC arrows keys
+(global-set-key [M-right]	'forward-sexp)
+(global-set-key [M-left]	'backward-sexp)
+(global-set-key [M-up]		'beginning-of-defun)
+(global-set-key [M-down]	'end-of-defun)
+
+ (setq
+ ;; Commandes a executer lors du passage en c-mode
+ c-mode-common-hook
+ '(lambda ()
+    (require 'c-funcs)
+    (setq c-default-style "k&r")
+	  ;; c-basic-offset 8)
+	  ;; tab-width 8)
+    (local-set-key (kbd "M-?")	"->")
+    (local-set-key (kbd "M-§")	"{\n\n}\n")
+
+    (local-set-key "\C-cf"	'c-function-header)
+    (local-set-key "\C-ck"	'c-class-header)
+    (local-set-key "\C-ce"	'c-header-edit-comment)    
+
+    (local-set-key "\C-cd"	"#define	")
+    (local-set-key "\C-cI"	'c-system-include)
+    (local-set-key "\C-ci"	'c-user-include)
+    (local-set-key "\C-cg"	'c-debug-line)
+    (local-set-key "\C-co"	'open-include)
+    ))
+
+  (define-derived-mode c4-mode c-mode "c4-mode"
+  "c-mode with indent set to 4"
+  (setq tab-width 4
+	c-basic-offset 4))
+  (define-derived-mode c8-mode c-mode "c8-mode"
+  "c-mode with indent set to 8"
+  (setq tab-width 8
+	 c-basic-offset 8))
+
+ (setq
+ ;; Commandes a executer lors du passage en c++-mode
+ c++-mode-hook
+ '(lambda ()
+    (require 'c-funcs)
+    (setq c-default-style "stroustrup"
+	  c-basic-offset 4
+	  tab-width 4)
+    (local-set-key (kbd "M-?")	"->")
+    (local-set-key (kbd "M-§")	"{\n\n}\n")
+
+    (local-set-key "\C-cf"	'c-function-header)
+    (local-set-key "\C-ck"	'c-class-header)
+    (local-set-key "\C-ce"	'c-header-edit-comment)    
+
+    (local-set-key "\C-cd"	"#define	")
+    (local-set-key "\C-cI"	'c-system-include)
+    (local-set-key "\C-ci"	'c-user-include)
+    (local-set-key "\C-cg"	'c-debug-line)
+    (local-set-key "\C-co"	'open-include)
+    ))
+
+(require 'variables)			;; Variables globales
+(autoload 'auto-template "auto-template" "Templates..." t)
+
+(global-set-key "\C-c\C-g"         'goto-line)
+
+(require 'myfct)
+
+;; Beep visuel et pas sonore
+(setq visible-bell t)
+;; Afficher la 'parenthèse correspondante'
+(show-paren-mode)
+;; Afficher le numero de la colonne
+(setq column-number-mode t)
+
+(defun my-speedbar ()
+  "Define speedbar actions."
+  (interactive)
+  (speedbar)
+  (speedbar-update-contents)
+)
+
+;; Speedbar
+(setq speedbar-vc-do-check nil)
+(require 'speedbar)
+(speedbar-add-supported-extension "tpl")
+(speedbar-add-supported-extension "sh")
+(speedbar-add-supported-extension "template")
+(speedbar-add-supported-extension "ebrowse")
+(global-set-key (kbd "M-a") 'my-speedbar)
+
+;; xcscope
+(require 'xcscope)
+
+(define-key global-map [(ctrl f1)] 'cscope-find-this-symbol)
+(define-key global-map [(ctrl f2)] 'cscope-find-global-definition)
+;; (define-key global-map [(ctrl f3)] 'cscope-find-global-definition-no-prompting)
+;; (define-key global-map [kbd C-q] 'cscope-find-global-definition-no-prompting)
+(global-set-key (kbd "M-<f3>") 'cscope-find-global-definition-no-prompting)
+(define-key global-map [(ctrl f4)] 'cscope-find-this-text-string)
+(define-key global-map [(ctrl f5)] 'cscope-find-this-file)
+(define-key global-map [(ctrl f6)] 'cscope-find-files-including-file)
+(define-key global-map [(ctrl f7)] 'cscope-find-functions-calling-this-function)
+;; (define-key global-map [(ctrl f8)] 'cscope-display-buffer)
+(define-key global-map [(ctrl f8)] 'cscope-prev-file)
+(define-key global-map [(ctrl f9)] 'cscope-next-file)
+(define-key global-map [(ctrl f10)] 'cscope-prev-symbol)
+(define-key global-map [(ctrl f11)] 'cscope-next-symbol)
+(define-key global-map [(ctrl f12)] 'cscope-pop-mark)
+
+(add-to-list 'auto-mode-alist '("\/[mM]akefile" . makefile-mode))
+(add-to-list 'auto-mode-alist '("\\.[ch]\\'" . c4-mode))
+;; (add-to-list 'auto-mode-alist '("VGoIPAutom_.*.c\\'" . c4-mode))
+;; (add-to-list 'auto-mode-alist '("VGoIPAutom_.*.[ch]\\'" . c4-mode))
+(add-to-list 'auto-mode-alist '("RCU.*.[h]\\'" . c++-mode))
+
+(global-set-key (kbd "C-c r") 'indent-region)
+(global-set-key (kbd "C-c b") 'indent-buffer)
+
+;; Transforme les tabulations en espace
+;; (setq-default indent-tabs-mode nil)

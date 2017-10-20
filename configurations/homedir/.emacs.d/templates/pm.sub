@@ -1,0 +1,4 @@
+"@FILE-NAME@"	tpl-file-name
+"@USER-NAME@"	tpl-user-name
+"@DATE-STAMP@"	tpl-date-stamp
+"@PACKAGE@"	(read-string "Package : " (substring tpl-file-name 0 (string-match "\\.[^.]+$" tpl-file-name)))
